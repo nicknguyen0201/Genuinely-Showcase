@@ -1,0 +1,148 @@
+/* ================================
+   Terms of Service Page
+   Emulates SurveyPage.css styling
+   ================================ */
+
+/* ---------- Page background ---------- */
+.terms-page {
+  min-height: 100vh;
+  padding: 2rem 1rem 5rem;
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 85% 10%, rgba(236, 72, 153, 0.14), transparent 60%),
+    radial-gradient(1000px 600px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 60%),
+    #0b1020;
+  color: #e7e9ee;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ---------- Container ---------- */
+.terms-shell {
+  max-width: 51.25rem; /* 820px */
+  margin: 0 auto;
+}
+
+/* ---------- Hero ---------- */
+.terms-hero {
+  margin-bottom: 1.125rem;
+}
+
+.terms-title {
+  font-size: clamp(1.75rem, 2.4vw + 1rem, 2.125rem);
+  line-height: 1.1;
+  margin: 0 0 0.625rem;
+  letter-spacing: -0.02em;
+}
+
+.terms-subtitle {
+  margin: 0;
+  color: rgba(231, 233, 238, 0.72);
+  font-size: 0.95rem;
+}
+
+/* ---------- Main card ---------- */
+.terms-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  border-radius: 1.125rem;
+  padding: 1.125rem;
+  box-shadow:
+    0 0.75rem 2.5rem rgba(0, 0, 0, 0.35),
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(0.625rem);
+}
+
+/* ---------- Sections ---------- */
+.terms-section {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(9, 13, 27, 0.45);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 0.875rem;
+}
+
+.section-title {
+  margin: 0 0 0.625rem;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.section-help {
+  margin: 0 0 0.875rem;
+  color: rgba(231, 233, 238, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ---------- Lists ---------- */
+.terms-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  font-size: 0.95rem;
+  color: rgba(231, 233, 238, 0.9);
+}
+
+.terms-list li {
+  margin: 0.35rem 0;
+}
+
+/* ---------- Inline code ---------- */
+.terms-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 0.5em;
+  background: rgba(255, 255, 255, 0.08);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  color: rgba(231, 233, 238, 0.95);
+}
+
+/* ---------- Safety callout ---------- */
+.terms-callout {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+}
+
+.terms-callout-title {
+  margin: 0 0 0.25rem;
+  font-weight: 800;
+  color: rgba(231, 233, 238, 0.92);
+}
+
+.terms-callout-text {
+  margin: 0;
+  color: rgba(231, 233, 238, 0.78);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ---------- Footer ---------- */
+.terms-footer {
+  margin-top: 0.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background: rgba(9, 13, 27, 0.35);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+}
+
+.terms-footer-text {
+  margin: 0;
+  color: rgba(231, 233, 238, 0.72);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 40rem) {
+  .terms-card {
+    padding: 1rem;
+  }
+
+  .terms-section {
+    padding: 0.9rem;
+  }
+}

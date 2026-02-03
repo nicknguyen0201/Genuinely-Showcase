@@ -1,0 +1,316 @@
+/* src/pages/SurveyPage.css */
+
+/* ---------- Page background ---------- */
+.survey-page {
+  min-height: 100vh;
+  padding: 2rem 1rem 5rem;
+  background:
+    radial-gradient(1200px 600px at 20% 0%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(900px 500px at 85% 10%, rgba(236, 72, 153, 0.14), transparent 60%),
+    radial-gradient(1000px 600px at 50% 100%, rgba(16, 185, 129, 0.12), transparent 60%),
+    #0b1020;
+  color: #e7e9ee;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* ---------- Container ---------- */
+.survey-shell {
+  max-width: 51.25rem; /* 820px -> rem */
+  margin: 0 auto;
+}
+
+.survey-hero {
+  margin-bottom: 1.125rem;
+  text-align: left;
+}
+
+.survey-title {
+  font-size: clamp(1.75rem, 2.4vw + 1rem, 2.125rem);
+  line-height: 1.1;
+  margin: 0 0 0.625rem;
+  letter-spacing: -0.02em;
+}
+
+.survey-subtitle {
+  margin: 0;
+  color: rgba(231, 233, 238, 0.72);
+  font-size: 0.95rem;
+}
+
+/* ---------- Form card ---------- */
+.survey-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  border-radius: 1.125rem;
+  padding: 1.125rem;
+  box-shadow:
+    0 0.75rem 2.5rem rgba(0, 0, 0, 0.35),
+    inset 0 0.0625rem 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(0.625rem);
+}
+
+/* ---------- Sections ---------- */
+.survey-section {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(9, 13, 27, 0.45);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 0.875rem;
+}
+
+.section-title {
+  margin: 0 0 0.625rem;
+  font-size: 1rem;
+  letter-spacing: 0.01em;
+}
+
+.section-help {
+  margin: 0 0 0.875rem;
+  color: rgba(231, 233, 238, 0.68);
+  font-size: 0.875rem;
+}
+
+/* ---------- Inputs ---------- */
+.field {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.875rem;
+}
+
+.label {
+  font-weight: 650;
+  font-size: 0.95rem;
+}
+
+.hint {
+  margin: 0;
+  color: rgba(231, 233, 238, 0.62);
+  font-size: 0.8125rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  max-width: 26.25rem; /* 420px -> rem */
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e7e9ee;
+  outline: none;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.input::placeholder {
+  color: rgba(231, 233, 238, 0.45);
+}
+
+.input:focus,
+.select:focus {
+  border-color: rgba(99, 102, 241, 0.75);
+  background: rgba(99, 102, 241, 0.10);
+}
+
+.input:focus-visible,
+.select:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+}
+
+/* Make <select> options readable (browser-dependent) */
+.select option {
+  color: #0b1020;
+}
+
+/* ---------- Question rows ---------- */
+.q-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 0.625rem;
+}
+
+.q-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(231, 233, 238, 0.9);
+}
+
+
+
+.pills {
+  display: inline-flex;
+  gap: 0.625rem;
+}
+
+/* Label is the clickable pill */
+.pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem;
+  border-radius: 999rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+  font-size: 0.875rem;
+  color: rgba(231, 233, 238, 0.9);
+}
+
+.pill:hover {
+  transform: translateY(-0.0625rem);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Hide native radio (removes browser circle/dot) */
+.pill input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  appearance: none;
+  -webkit-appearance: none;
+  accent-color: auto;
+}
+
+.pill-label {
+  font-weight: 650;
+}
+
+/* Selected: YES -> green */
+.pill--yes:has(input:checked) {
+  background: rgba(16, 185, 129, 0.85);
+  border-color: rgba(16, 185, 129, 0.85);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+/* Selected: NO -> red */
+.pill--no:has(input:checked) {
+  background: rgba(244, 63, 94, 0.85);
+  border-color: rgba(244, 63, 94, 0.85);
+  color: rgba(255, 255, 255, 0.98);
+}
+
+/* Keyboard focus */
+.pill:focus-within {
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.22);
+  border-color: rgba(99, 102, 241, 0.6);
+}
+
+
+/* ---------- Sticky submit bar ---------- */
+.submit-bar {
+  position: sticky;
+  bottom: 0.625rem;
+  margin-top: 1.125rem;
+  padding: 0.75rem;
+  border-radius: 1rem;
+  background: rgba(9, 13, 27, 0.70);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(0.625rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.submit-note {
+  font-size: 0.875rem;
+  color: rgba(231, 233, 238, 0.75);
+  margin: 0;
+}
+
+.submit-btn {
+  border: none;
+  cursor: pointer;
+  font-weight: 800;
+  padding: 0.75rem 1rem;
+  border-radius: 999rem;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(236, 72, 153, 0.90));
+  color: white;
+  box-shadow: 0 0.625rem 1.5rem rgba(99, 102, 241, 0.25);
+  transition: transform 120ms ease, filter 120ms ease;
+  white-space: nowrap;
+}
+
+.submit-btn:hover {
+  transform: translateY(-0.0625rem);
+  filter: brightness(1.05);
+}
+
+.submit-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 40rem) {
+  .q-row {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submit-btn {
+    width: 100%;
+  }
+  .pref-block {
+  margin: 0.75rem 0 1rem;
+  padding: 0.75rem;
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+}
+
+.pref-title {
+  margin: 0 0 0.25rem;
+  font-weight: 700;
+  color: rgba(231, 233, 238, 0.92);
+}
+
+
+}
+/* ---------- Terms consent ---------- */
+.submit-left {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.terms-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 0.875rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  color: rgba(231, 233, 238, 0.85);
+  font-size: 0.875rem;
+  line-height: 1.35;
+}
+
+.terms-consent input[type="checkbox"] {
+  margin-top: 0.15rem;
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.terms-link {
+  color: rgba(99, 102, 241, 0.95);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
+}
