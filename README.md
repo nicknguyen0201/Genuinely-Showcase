@@ -107,15 +107,6 @@ This is an **early-stage, student-led project**, not a commercial product.
 
 ---
 
-## 🧑‍💻 Local Development
-
-```bash
-git clone https://github.com/your-username/genuinely
-cd genuinely
-npm install
-npm run dev
-```
-
 ## [Video Demo](https://youtu.be/3h24wamH_04)
 
 © 2026 Genuinely. All rights reserved.
