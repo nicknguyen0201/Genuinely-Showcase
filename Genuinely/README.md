@@ -16,13 +16,8 @@ This notebook implements the **batch matching pipeline** for the Genuinely frien
 
 ### Python environment
 
-Recommended: Python 3.10+.
+Python 3.10+.
 
-Install required packages (exact set may vary based on your env):
-
-```bash
-pip install numpy pandas python-dotenv supabase requests matplotlib
-```
 
 ### Environment variables
 
@@ -261,54 +256,3 @@ Used to generate the email content so users see:
 - who they matched with (name/year)
 - what they have in common
 
----
-
-## 6) How to run (manual)
-
-1. Ensure `.env` is present and correct
-2. Start Jupyter and open `Matching.ipynb`
-3. Run all cells (or run `main()`)
-
-Expected output:
-
-- number of users pulled
-- warnings for invalid vectors
-- stable roommate result / pairs
-- insert confirmation
-- email send logs and emailed_at updates
-
----
-
-## 7) Safety & operational notes
-
-### Service role key
-
-This notebook uses `SUPABASE_SERVICE_ROLE_KEY`, which bypasses RLS.
-
-- Keep the notebook private
-- Do not commit `.env`
-
-## 8) Common failure modes & fixes
-
-- **No rows returned**
-
-  - check `profiles.active`
-  - check Supabase credentials
-
-- **Bad vector length**
-
-  - ensure frontend writes consistent `survey_vec` length
-  - keep weight vector length in sync with survey vector dimension
-
-- **Irving fails**
-
-  - stable roommates may have no stable solution
-  - consider:
-    - retry with small random tie-breaking
-    - fallback to maximum-weight matching
-    - allow “unmatched” users
-
-- **Emails not sent**
-  - verify `RESEND_API_KEY` + `RESEND_FROM`
-  - confirm domain is verified with Resend
-  - watch for provider rate limits
