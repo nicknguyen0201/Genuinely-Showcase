@@ -1,4 +1,5 @@
 # Genuinely 🫶
+https://www.genuinely.life/
 
 _A student-led friendship matching platform for UC San Diego students_
 
