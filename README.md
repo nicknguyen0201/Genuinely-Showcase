@@ -90,6 +90,7 @@ The Terms clarify:
 - User responsibility for interactions
 - Data usage and anonymization
 - Safety expectations
+- No affiliation with UC San Diego, it is a project of a student
 
 Terms are available at:  
 `/terms`
