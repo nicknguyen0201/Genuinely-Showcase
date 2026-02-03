@@ -1,4 +1,4 @@
-# Genuinely 🤝
+# Genuinely 🫶
 
 _A student-led friendship matching platform for UC San Diego students_
 
