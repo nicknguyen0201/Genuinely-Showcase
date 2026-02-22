@@ -1,0 +1,110 @@
+name: Genuinely - 4-day matching cycle
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "What to run (auto follows the 4-day cycle)"
+        required: true
+        default: auto
+        type: choice
+        options:
+          - auto
+          - main
+          - feedback
+  schedule:
+    # GitHub schedules are in UTC.
+    # 20:00 UTC corresponds to 12pm PST / 1pm PDT (both acceptable).
+    - cron: "0 20 * * *"
+
+concurrency:
+  group: genuinely-cycle
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  # Set this to a date (UTC) that should be a "main" day.
+  # The cycle is:
+  #   day 0: main
+  #   day 1: feedback
+  #   day 2-3: skip
+  # repeating every 4 days.
+  ANCHOR_DATE_UTC: "2026-02-23"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Genuinely
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Decide task for today
+        id: decide
+        env:
+          INPUT_TASK: ${{ inputs.task || 'auto' }}
+        run: |
+          python - <<'PY'
+          import os
+          import datetime as dt
+          input_task = os.environ.get('INPUT_TASK', 'auto')
+          if input_task and input_task != 'auto':
+              task = input_task
+          else:
+              anchor = dt.date.fromisoformat(os.environ['ANCHOR_DATE_UTC'])
+              today = dt.datetime.now(dt.timezone.utc).date()
+              delta_days = (today - anchor).days
+
+              if delta_days < 0:
+                  task = 'skip'
+              else:
+                  mod = delta_days % 4
+                  if mod == 0:
+                      task = 'main'
+                  elif mod == 1:
+                      task = 'feedback'
+                  else:
+                      task = 'skip'
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as f:
+              f.write(f"task={task}\n")
+
+          print(f"[cycle] input_task={input_task} -> task={task}")
+          PY
+
+      - name: Skip (not scheduled today)
+        if: steps.decide.outputs.task == 'skip'
+        run: |
+          echo "Not scheduled today. Exiting."
+
+      - name: Run task
+        if: steps.decide.outputs.task != 'skip'
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_FROM: ${{ secrets.RESEND_FROM }}
+          FEEDBACK_SIGNING_SECRET: ${{ secrets.FEEDBACK_SIGNING_SECRET }}
+          PYTHONUNBUFFERED: "1"
+          MPLBACKEND: "Agg"
+        run: |
+          if [ -z "$SUPABASE_URL" ]; then
+            echo "⚠️  No secrets found — skipping (public repo or secrets not configured)."
+            exit 0
+          fi
+          python run_matching_cli.py --task "${{ steps.decide.outputs.task }}"
