@@ -1,114 +1,153 @@
-# Genuinely 🫶
-https://www.genuinely.life/
+# Genuinely — Friend Matching Platform
 
-_A student-led friendship matching platform for UC San Diego students_
+> A deployed, full-stack friend-matching platform for UCSD students — built and operated solo.
 
-Genuinely is a non-profit, student-built web platform that helps verified UC San Diego students connect with new friends based on shared interests, preferences, and personality “vibes”.
+**Live at:** [genuinely.life](https://www.genuinely.life)
 
-This project was created to address a common experience at large universities:
-
-> _It can be surprisingly hard to form meaningful friendships, even when you’re trying._
-
-Genuinely focuses on **friendship only** — not dating, not social media, not clubs — just genuine 1-on-1 connections.
-
----
-
-## ✨ Features
-
-- 🔐 **UCSD-only access** via `@ucsd.edu` email verification
-- 🧠 **Survey-based matching** using a fixed-dimension feature vector (33 dims)
-- 🤖 **Algorithmic matching** based on similarity scoring (statistical / ML-ready)
-- 📧 **Email-based introductions** (no in-app DMs)
-- 🧩 **User preferences** (same year / same gender optional)
-- 🪟 **Privacy-first design** (no public profiles, no shame in participation )
-- 📜 **Explicit Terms of Service consent** before participation
-
----
-
-## 🧭 How it works
-
-1. User logs in with a UCSD email (OTP)
-2. User completes a short survey about:
-   - basic info (name, year, gender)
-   - personality vibes
-   - interests
-   - matching preferences
-3. Survey responses are converted into a **fixed-order feature vector**
-4. Users are matched with other compatible students every 4 days
-5. Both users receive an **email introduction** and can choose to reach out
-
-All interactions happen **outside the platform** and are fully optional.
-
----
-
-## 🛠 Tech Stack
-
-### Frontend
-
-- **React + TypeScript**
-- **Vite**
-- **React Router**
-- Custom CSS
-
-### Backend / Infrastructure
-
-- **Supabase**
-  - Auth (OTP)
-  - Postgres
-  - Row-level security
-- **Serverless functions** (for email + terms acceptance)
-- **Resend** (transactional emails)
-
-### Data / Matching
-
-- Survey → **33-dimensional vector**
-- Regularly send users email asking for their match feedback (eg. Is Jonathan a good match? Yes/No)
-- Similarity-based matching (extensible to ML approaches)
-- Aggregated, anonymized analysis for improving matching logic
-
----
-
-## 🔐 Privacy & Safety
-
-- Only verified UCSD students can use the platform
-- Profiles are **not public**
-- Genuinely facilitates introductions only
-- All interactions are at users’ own discretion
-- Survey and feedback data may be analyzed **only in anonymized and aggregated form**
-- Personal identifiers are removed before analysis
-
-For full details, see the **Terms of Service**.
-
----
-
-## 📜 Terms of Service
-
-Users must explicitly agree to the Terms of Service before submitting the survey.
-
-The Terms clarify:
-
-- Genuinely’s role as a facilitator only
-- User responsibility for interactions
-- Data usage and anonymization
-- Safety expectations
-- No affiliation with UC San Diego, it is a project of a student
-
-Terms are available at:  
-`/terms`
+## [Video Demo](https://youtu.be/3h24wamH_04)
 
 ---
 
 ## 🚧 Project Status
 
-- 🟢 Active development
-- 👥 60+ early users, 100+ matches sent, collaborating with restaurants on campus to give users a discount for in-person meet up
-- 🧪 Iterating on matching logic and UX
-- 📈 Exploring better onboarding and feedback loops
+- 🟢 **Active** — currently live and running
+- 👥 **100+ users** onboarded in the first month
+- 💌 **150+ matches** sent via automated email pipeline
+- 🤝 **Partnered with 2 on-campus restaurants** to offer users 10–20% discounts for in-person meetups
+- 🔁 Iterating on matching logic, UX, and feedback loops
 
-This is an **early-stage, student-led project**, not a commercial product.
+> **Note:** Matching runs on a private repo to protect user data (PR history contains PII). This showcase repo mirrors the core matching logic and automation pipeline.
 
 ---
 
-## [Video Demo](https://youtu.be/3h24wamH_04)
+## 🧠 What This Repo Shows
 
-© 2026 Genuinely. All rights reserved.
+This repo contains the **matching engine and automation pipeline** — the most technically interesting part of the system.
+
+### The stack
+
+- **Frontend:** Next.js + Supabase Auth (private repo)
+- **Database:** Supabase (Postgres + RLS)
+- **Emails:** Resend API
+- **Matching:** Irving's Stable Roommates algorithm (Python)
+- **Automation:** GitHub Actions (scheduled, 4-day cycle)
+
+---
+
+## 📐 Matching Algorithm
+
+### Problem
+
+Given n users, find a **stable pairing** (no two people would both prefer each other over their current match).
+
+This is the **Stable Roommates Problem** — harder than Stable Marriage because it is not bipartite.
+
+### Approach
+
+1. **Feature vectors** — each user fills out a survey encoded as a 33-dim binary vector:
+   - Gender (4 dims, one-hot)
+   - Year (6 dims, one-hot)
+   - Vibes: introvert/extrovert/spontaneous/etc. (6 dims)
+   - Interests: gaming/fitness/music/etc. (16 dims)
+   - Bias term (1 dim)
+
+2. **Weighted MSE distance matrix** — pairwise distance between users i and j:
+
+$$X[i,j] = \sum_k w_k (F[i,k] - F[j,k])^2$$
+
+where `w` is a weight vector (currently hand-tuned, designed to be learned from feedback data).
+
+3. **Ban penalty** — previously matched pairs get `X[i,j] = 300` to avoid repeat matches.
+
+4. **Preference matrix** — each user's preference list is their row of `X` sorted ascending (closer = more preferred).
+
+5. **Irving's algorithm** — finds a stable matching if one exists. Dummy user appended if `n` is odd.
+
+6. **Email delivery** — match emails sent via Resend with decoded profile info (name, year, gender, things in common).
+
+---
+
+## 🔁 Automated 4-Day Cycle (GitHub Actions)
+
+The pipeline runs fully automated on a 4-day repeating schedule:
+
+| Day       | What runs                                                            |
+| --------- | -------------------------------------------------------------------- |
+| **Day 0** | `main()` — compute matches, send match emails, write to DB           |
+| **Day 1** | `send_feedback_for_latest_round()` — ask users if the match was good |
+| **Day 2** | skip                                                                 |
+| **Day 3** | skip                                                                 |
+
+Triggered daily at **12pm PST / 1pm PDT** via GitHub Actions cron.
+
+Manual override available via `workflow_dispatch` (Actions tab).
+
+---
+
+## 📁 Repo Structure
+
+```
+Genuinely/
+├── Matching.py              # Full matching pipeline
+├── run_matching_cli.py      # CLI entry point for GitHub Actions
+├── requirements.txt
+└── README.md
+
+.github/
+└── workflows/
+    └── genuinely-cycle.yml  # Scheduled 4-day automation
+```
+
+---
+
+## ⚙️ How to Run Locally
+
+### 1. Install dependencies
+
+```bash
+pip install -r Genuinely/requirements.txt
+```
+
+### 2. Set environment variables
+
+Create a `.env.local` in the project root:
+
+```env
+SUPABASE_URL="https://<project>.supabase.co"
+SUPABASE_SERVICE_ROLE_KEY="..."
+RESEND_API_KEY="..."
+RESEND_FROM="Genuinely <matches@send.genuinely.life>"
+FEEDBACK_SIGNING_SECRET="..."
+```
+
+### 3. Run
+
+```bash
+# Run matching + send match emails
+python Genuinely/run_matching_cli.py --task main
+
+# Send feedback emails for the previous round
+python Genuinely/run_matching_cli.py --task feedback
+```
+
+---
+
+## 🔐 Security Notes
+
+- `SUPABASE_SERVICE_ROLE_KEY` bypasses RLS — never exposed client-side
+- `.env.local` is gitignored
+- Feedback links are HMAC-signed with expiry (7 days)
+- Private repo holds user data; this repo contains logic only
+
+---
+
+## 📈 Roadmap
+
+- [ ] Learn weight vector `w` from feedback signal (liked/disliked match) to further improve matching algorithm
+
+---
+
+## 👤 Author
+
+Built and operated solo by **Nick** — UCSD student  
+Questions? → [contact@send.genuinely.life](mailto:contact@send.genuinely.life)
