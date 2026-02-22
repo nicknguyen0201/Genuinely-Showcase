@@ -49,7 +49,7 @@ This is the **Stable Roommates Problem** — harder than Stable Marriage because
    - Year (6 dims, one-hot)
    - Vibes: introvert/extrovert/spontaneous/etc. (6 dims)
    - Interests: gaming/fitness/music/etc. (16 dims)
-   - Bias term (1 dim)
+  
 
 2. **Weighted MSE distance matrix** — pairwise distance between users i and j:
 
