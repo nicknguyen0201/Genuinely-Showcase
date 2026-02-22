@@ -80,7 +80,7 @@ The pipeline runs fully automated on a 4-day repeating schedule:
 
 Triggered daily at **12pm PST / 1pm PDT** via GitHub Actions cron.
 
-Manual override available via `workflow_dispatch` (Actions tab).
+
 
 ---
 
