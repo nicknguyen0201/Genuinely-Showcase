@@ -151,3 +151,4 @@ python Genuinely/run_matching_cli.py --task feedback
 
 Built and operated solo by **Nick** — UCSD student  
 Questions? → [contact@send.genuinely.life](mailto:contact@send.genuinely.life)
+© 2026 Genuinely. All rights reserved.
